@@ -10,7 +10,9 @@ Generate beautiful color palettes from text prompts using Google Gemini AI.
 - Web interface (Flask backend + HTML/CSS/JS frontend)
 
 ## Demo
-![screenshot](screenshot.png) <!-- Add a screenshot if available -->
+<img width="400" height="347" alt="Screenshot 2025-07-14 at 14 20 40" src="https://github.com/user-attachments/assets/87b3dc80-db0e-4c83-8d43-e4113c75011d" />
+<img width="400" height="333" alt="Screenshot 2025-07-14 at 16 23 55" src="https://github.com/user-attachments/assets/ceeb8450-65a3-4ff7-b7b9-7769b89aee8a" />
+<img width="400" height="215" alt="Screenshot 2025-07-14 at 13 42 36" src="https://github.com/user-attachments/assets/34e89268-0f5f-4733-b6c3-a7397b9a54c6" />
 
 ## Setup
 
