@@ -26,5 +26,6 @@ def generate_palette():
         hex_codes = generator.generate_palette(prompt)
     return jsonify({'palette': hex_codes})
 
-if __name__ == '__main__':
-    app.run(debug=True) 
+# For local development only:
+# if __name__ == '__main__':
+#     app.run(debug=True) 
