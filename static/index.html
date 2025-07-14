@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Text-to-Palette Generator</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f4f4; }
+    .container { max-width: 600px; margin: 40px auto; background: #fff; padding: 32px; border-radius: 12px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
+    h1 { text-align: center; }
+    .palette { display: flex; gap: 16px; margin-top: 24px; justify-content: center; }
+    .swatch {
+      width: 80px; height: 80px; border-radius: 8px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      color: #222; font-weight: bold;
+      border: 2px solid #eee;
+    }
+    .swatch span { margin-top: 8px; font-size: 0.9em; background: rgba(255,255,255,0.7); padding: 2px 6px; border-radius: 4px; }
+    .input-row { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+    input[type="text"] { flex: 1; padding: 8px; font-size: 1em; border-radius: 4px; border: 1px solid #ccc; }
+    button { padding: 8px 18px; font-size: 1em; border-radius: 4px; border: none; background: #3a4f41; color: #fff; cursor: pointer; }
+    button:disabled { background: #aaa; }
+    .error { color: #b00; text-align: center; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Text-to-Palette Generator</h1>
+    <div class="input-row">
+      <input id="prompt" type="text" placeholder="e.g. autumn forest" size="40">
+      <button id="generateBtn" onclick="generate()">Generate Palette</button>
+    </div>
+    <div id="error" class="error"></div>
+    <div id="palette" class="palette"></div>
+  </div>
+  <script>
+    async function generate() {
+      const prompt = document.getElementById('prompt').value.trim();
+      const errorDiv = document.getElementById('error');
+      const btn = document.getElementById('generateBtn');
+      errorDiv.textContent = '';
+      if (!prompt) {
+        errorDiv.textContent = 'Please enter a prompt.';
+        return;
+      }
+      btn.disabled = true;
+      try {
+        const res = await fetch('/generate_palette', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({prompt})
+        });
+        if (!res.ok) throw new Error('Server error');
+        const data = await res.json();
+        const paletteDiv = document.getElementById('palette');
+        paletteDiv.innerHTML = '';
+        if (!data.palette || !data.palette.length) {
+          errorDiv.textContent = 'No palette generated.';
+          return;
+        }
+        data.palette.forEach(hex => {
+          paletteDiv.innerHTML += `
+            <div class="swatch" style="background:${hex};">
+              <span>${hex}</span>
+            </div>
+          `;
+        });
+      } catch (e) {
+        errorDiv.textContent = 'Failed to generate palette.';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html> 
