@@ -1,6 +1,7 @@
 # Text-to-Palette Generator using Google Gemini
 
 https://neural-color-palette-generator.onrender.com/static/index.html
+
 Generate beautiful color palettes from text prompts using Google Gemini AI.
 
 ## Features
