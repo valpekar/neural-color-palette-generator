@@ -2,6 +2,9 @@ from typing import List
 import google.generativeai as genai  # type: ignore
 from config import API_KEY, GEMINI_MODEL, PALETTE_SIZE
 
+if not API_KEY:
+    raise RuntimeError("GOOGLE_API_KEY is not set. Please set it in your .env file or environment variables.")
+
 class PaletteGenerator:
     def __init__(self):
         genai.configure(api_key=API_KEY)
