@@ -1,4 +1,6 @@
 google-generativeai
 scikit-learn
 matplotlib
-rich 
+rich
+flask
+python-dotenv 
