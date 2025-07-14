@@ -24,6 +24,7 @@
     .disclaimer { font-size: 0.95em; color: #555; margin-top: 18px; text-align: center; }
     .api-row { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
     #api_key { width: 100%; }
+    #downloadBtn { display: none; margin: 24px auto 0 auto; }
   </style>
 </head>
 <body>
@@ -43,14 +44,28 @@
     </div>
     <div id="error" class="error"></div>
     <div id="palette" class="palette"></div>
+    <button id="downloadBtn" onclick="downloadScss()">Download SCSS</button>
   </div>
   <script>
+    let lastPalette = [];
+    function paletteToScss(palette) {
+      let scss = '';
+      palette.forEach((hex, i) => {
+        scss += `$color-${i+1}: ${hex};\n`;
+      });
+      if (palette.length) {
+        scss += `$primary-color: ${palette[0]};\n`;
+      }
+      return scss;
+    }
     async function generate() {
       const prompt = document.getElementById('prompt').value.trim();
       const apiKey = document.getElementById('api_key').value.trim();
       const errorDiv = document.getElementById('error');
       const btn = document.getElementById('generateBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
       errorDiv.textContent = '';
+      downloadBtn.style.display = 'none';
       if (!prompt) {
         errorDiv.textContent = 'Please enter a prompt.';
         return;
@@ -70,6 +85,7 @@
           errorDiv.textContent = 'No palette generated.';
           return;
         }
+        lastPalette = data.palette;
         data.palette.forEach(hex => {
           paletteDiv.innerHTML += `
             <div class="swatch" style="background:${hex};">
@@ -77,11 +93,23 @@
             </div>
           `;
         });
+        downloadBtn.style.display = 'block';
       } catch (e) {
         errorDiv.textContent = 'Failed to generate palette.';
       } finally {
         btn.disabled = false;
       }
+    }
+    function downloadScss() {
+      if (!lastPalette.length) return;
+      const scss = paletteToScss(lastPalette);
+      const blob = new Blob([scss], {type: 'text/x-scss'});
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'palette.scss';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   </script>
 </body>

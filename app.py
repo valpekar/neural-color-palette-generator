@@ -26,6 +26,9 @@ def generate_palette():
         hex_codes = generator.generate_palette(prompt)
     return jsonify({'palette': hex_codes})
 
-# For local development only:
-# if __name__ == '__main__':
-#     app.run(debug=True) 
+# For local development and Render.com:
+if __name__ == '__main__':
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    host = os.environ.get("HOST", "0.0.0.0")  # Use HOST env var, default to 0.0.0.0
+    app.run(host=host, port=port) 
