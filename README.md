@@ -18,7 +18,7 @@ Generate beautiful color palettes from text prompts using Google Gemini AI.
 
 ### 1. Clone the repository
 ```sh
-git clone https://github.com/yourusername/neural-color-palette-generator.git
+git clone https://github.com/valpekar/neural-color-palette-generator.git
 cd neural-color-palette-generator
 ```
 
